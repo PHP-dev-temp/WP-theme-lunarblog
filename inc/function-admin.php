@@ -38,8 +38,10 @@ add_action('admin_menu', 'lunar_add_admin_page');
 
 function lunar_custom_settings() {
     // Generate fields on admin setting page
+    register_setting('lunar-settings-group', 'profile_picture');
     register_setting('lunar-settings-group', 'first_name');
     register_setting('lunar-settings-group', 'last_name');
+    register_setting('lunar-settings-group', 'user_description');
 
     // Added sanitize function for twitter input: lunar_sanitize_twitter_handler.
     register_setting('lunar-settings-group', 'twitter_handler', 'lunar_sanitize_twitter_handler');
@@ -50,13 +52,22 @@ function lunar_custom_settings() {
     add_settings_section('lunar-sidebar-options', 'Sidebar Options', 'lunar_sidebar_options', 'lunar_blog_general');
 
     // Add/show fields
+    add_settings_field('sidebar-profile-picture', 'Profile Picture', 'lunar_sidebar_profile', 'lunar_blog_general', 'lunar-sidebar-options');
     add_settings_field('sidebar_name', 'Full Name', 'lunar_sidebar_name', 'lunar_blog_general', 'lunar-sidebar-options');
-    add_settings_field('sidebar_twitter', 'Twitter handler', 'lunar_sidebar_twitter', 'lunar_blog_general',
+    add_settings_field('sidebar_description', 'User Description', 'lunar_sidebar_description', 'lunar_blog_general', 'lunar-sidebar-options');
+    add_settings_field('sidebar_twitter', 'Twitter Handler', 'lunar_sidebar_twitter', 'lunar_blog_general',
         'lunar-sidebar-options');
-    add_settings_field('sidebar_facebook', 'Facebook handler', 'lunar_sidebar_facebook', 'lunar_blog_general',
+    add_settings_field('sidebar_facebook', 'Facebook Handler', 'lunar_sidebar_facebook', 'lunar_blog_general',
         'lunar-sidebar-options');
-    add_settings_field('sidebar_google_plus', 'Google plus handler', 'lunar_sidebar_google_plus', 'lunar_blog_general',
+    add_settings_field('sidebar_google_plus', 'Google Plus Handler', 'lunar_sidebar_google_plus', 'lunar_blog_general',
         'lunar-sidebar-options');
+}
+
+// Generate name fields
+function lunar_sidebar_profile() {
+    $picture = get_option('profile_picture');
+    echo '<input type="button" class="button button-secondary" value="Upload Profile Picture" id="upload-button">';
+    echo '<input type="hidden" id="profile-picture" name="profile_picture" value="' . $picture . '"/>';
 }
 
 // Generate name fields
@@ -65,6 +76,13 @@ function lunar_sidebar_name() {
     $lastName = get_option('last_name');
     echo '<input type="text" name="first_name" value="' . $firstName . '" placeholder="First Name"/>';
     echo '<input type="text" name="last_name" value="' . $lastName . '" placeholder="Last Name"/>';
+}
+
+// Generate description fields
+function lunar_sidebar_description() {
+    $userDescription = get_option('user_description');
+    echo '<input type="text" name="user_description" value="' . $userDescription . '" placeholder="User description"/>';
+    echo '<p class="description">Write something smart</p>';
 }
 
 // Generate twitter field
