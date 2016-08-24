@@ -23,6 +23,6 @@ $description = esc_attr(get_option('user_description'));
 </div>
 <form method="post" action="options.php" class="lunar-general-form">
     <?php settings_fields('lunar-settings-group'); ?>
-    <?php do_settings_sections('lunar_blog_general'); ?>
-    <?php submit_button(); ?>
+    <?php do_settings_sections('lunar_blog_general'); ?>    
+	<?php submit_button( 'Save Changes Again', 'primary', 'btnSubmit' ); ?>
 </form>
